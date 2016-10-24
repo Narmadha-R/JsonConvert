@@ -1,78 +1,51 @@
 var fs=require('fs');
-var fetch = require('readline').createInterface({
-input: fs.createReadStream('India2011.csv')
-//output: fs.createWriteStream('india2011.json')
+var lEmitter= require('readline').createInterface({
+input: fs.createReadStream('India2011.csv'),
+output: fs.createWriteStream('indiaa2011.json')
 });
 var data=[];
-var obj={};
+var arr=[];
 var head =[];
 var c=0;
-fetch.on('line', function (line) 
-{
+
+lEmitter.on('line', function (line) {
   
   if(c == 0){
-     head =line.split(',');
-    //console.log(head);
-     c++;
+	 head = line.split(',');
+	//console.log(head);
+	 c++;
   }
  
   else
   {
-      var aa = line.split(',');
-      for (var j=0;j<head.length;j++) {            
+	  var myobj={};
+	  var aa = line.split(',');
+	  
+	  for (var j=0;j<head.length;j++){            
+        
+  				 
+	     if(j==5)
+	      
 
-    if(j==3)
-          
-         /*    if(c==3)	  
-			 {
-			  while(c<=15)
-				{
-					data[j]=aa[j]+data[j];
-					j++;
-					c++;
-				}
-				obj[head[j]]==data[j];
-			 }*/
-              obj[head[j]]=aa[j];
-          
-	if(j==5)
-			/* if(c==3)	  
-			 {
-              while(c<=15)
-				{
-					data[j]=aa[j]+data[j];
-					j++;
-					c++;
-				}
-				obj[head[j]]==data[j];
-			 }*/
-          obj[head[j]]=aa[j];
-          
-         
-    if(j==12)
-	     
-	     /*  if(c==3)	 
-			{
-				while(c<=15)
-				{
-					data[j]=aa[j]+data[j];
-					j++;
-					c++;
-				}
-				obj[head[j]]=data[j];
+			 myobj[head[j]]=aa[j];
+			
+		      
+	 
+
+	if(j==12)
+		  
+		
+			  myobj[head[j]] = aa[j];
+		
+	
+	arr.push(myobj);
+}
+  });
+           lEmitter.on('close',function(){
 			  
-             }   */        
-              obj[head[j]]=aa[j];
-          
+		   var jso = JSON.stringify(arr);
+	       fs.appendFile('indiaa2011.json',jso,function(err){
+           // console.log(jso);
 
-      }
-      
-     //console.log(obj);
-      var jso=JSON.stringify(obj);
-      fs.appendFile('india2011.json',jso,function(err){
-		   console.log(jso);
-	  });
-    
-  }
-
+		   });
 });
